@@ -1,0 +1,129 @@
+body {
+	margin-left:50px;
+	color:black;
+	font-family: Baskerville,"Baskerville old face","Hoefler Text",Garamond,"Times New Roman",serif;
+	font-size: 12pt;
+
+}	
+.page_header_wrapper {	
+    margin-bottom:0.125in;
+	height: 1in;
+	width: 8.5in;
+	padding-left:0.5in;
+    padding-bottom: 0.0625in;
+	text-align: left; 
+	font-weight:bold;
+	border-bottom: 1pt solid #ff0000;
+}
+.logo {
+	font-size: 24pt;
+	color: #ff0000;
+}
+.page_subheader {
+	margin-left:0.25in;
+	margin-bottom:0.25in;
+	font-size: 12pt;
+    font-style: italic; 
+	color: black;
+}
+.file_getter{
+	margin:20px;
+	padding:5px;
+	font-weight:bold;				
+}
+
+.block_header {
+	padding-top:0.125in;
+	padding-bottom:0.125in;
+	font-weight:bold;
+}
+
+.info_area{
+    width: 5in;
+	left: 0.5in;
+	padding-top: 0.25in;
+	padding-right: 0.125in;
+}
+
+.info_title {
+	padding:5px;
+	font-weight:bold;					
+	font-size: 10pt;
+	
+}
+
+.json_area {
+	position: absolute;
+	top: 1.25in;
+	left: 5.5in;
+	margin-bottom:0.5in;
+	padding-top: 0.25in;
+    padding-left:0.25in;
+	
+}
+.bibtex_area {
+	position: absolute;
+	top: 1.25in;
+	left: 0.5in;
+	padding-top: 0.25in;
+	padding-right: 0.125in;
+}
+
+.bibtex_url{
+	width:4.5in;
+	height: 0.2in;
+	margin-top:2px;
+	margin-bottom:10px;
+	padding-top:1pt;
+	padding-bottom:1pt;
+	padding-left:10px;
+	font-family: "Tahoma","sans-serif";
+	font-weight:normal;					
+	font-size:10pt;
+}
+
+.bibtex_data {
+	width:4.5in;
+	height: 3in;
+	vertical-align:top;
+	margin-top:2px;
+	margin-bottom:20px;
+	padding:10px;
+	font-family: "Tahoma","sans-serif";
+	font-weight:normal;	
+	font-size:10pt;
+	
+}
+
+.json_data {
+	width:4.5in;
+	height: 4in;
+	margin-top:15px;
+	margin-bottom:20px;
+	padding:10px;
+	font-family: "Tahoma","sans-serif";
+	font-weight:normal;					
+	font-size:10pt;
+}
+
+._button {
+	margin-top:5px;
+	margin-bottom:5px;
+	margin-right:20px;
+	margin-left:2px;
+	font-weight:normal;					
+	font-size:8pt;
+	
+}
+
+.status {
+	padding:10px;
+	font-weight:bold;					
+	color:red;
+	font-size: 12pt;
+}
+
+.debug_area {
+	border-top: 1pt solid #ff0000;
+}
+	

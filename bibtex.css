@@ -51,6 +51,13 @@ body {
 	font-size: 10pt;
 	
 }
+.csv_area {
+	position: absolute;
+	height: 11in;
+	top: 6.5in;
+	left: 0.5in;
+	padding-right: 0.125in;
+}
 
 .json_area {
 	position: absolute;
@@ -58,11 +65,12 @@ body {
 	left: 5.5in;
 	margin-bottom:0.5in;
 	padding-top: 0.25in;
-    padding-left:0.25in;
-	
+    padding-left:0.25in;    
 }
+
 .bibtex_area {
 	position: absolute;
+	height: 5in;
 	top: 1.25in;
 	left: 0.5in;
 	padding-top: 0.25in;
@@ -105,6 +113,18 @@ body {
 	font-weight:normal;					
 	font-size:10pt;
 }
+
+.csv_data {
+	width:9.75in;
+	height: 10in;
+	margin-top:15px;
+	margin-bottom:20px;
+	padding:10px;
+	font-family: "Tahoma","sans-serif";
+	font-weight:normal;					
+	font-size:10pt;
+}
+
 
 ._button {
 	margin-top:5px;

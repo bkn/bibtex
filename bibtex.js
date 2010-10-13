@@ -44,6 +44,7 @@ function show_csv(response) {
 	var i = 0;
 	var x = 0;
 	var k;
+	var v = '';
 	var content = '';
 	for (k in facets) {
 		headers[i] = k;
@@ -64,7 +65,9 @@ function show_csv(response) {
 			}
 			k = headers[x];
 			if ((k in response[i]) && response[i][k]) {
-				content += '"'+response[i][k]+'"';				
+//				v = response[i][k].replace(/\n/g, "\\n"); // don't allow linebreak in value
+				v = response[i][k]
+				content += '"'+v+'"';				
 			}
 		}
 		content += '\n';

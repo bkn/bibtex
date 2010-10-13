@@ -663,11 +663,64 @@ def selection(d):
 
 def display(d): return '\\item[$\mbox{' + d['count'] + '}$] [' + d['bibfile'].split('/')[-1] + '/' + d['citekey'] + '] ' + d['bibitem'] + '\n\n'
 
+def bibtex_to_json(bibstring):
+	value_substitutions = {
+		'{':'',
+		'}':''
+		}	
+	j = read_bibstring(bibstring, value_substitutions)
+	return j
+	
 
-def bibtex_to_json_service(cgi_fields):
+def get_attributes(response):
+#	response should be a list of dicts
+	facets = {}
+	for r in response:
+		for k in r:
+			if (k in facets):
+				facets[k] += 1
+			
+			else:
+				facets[k] = 1
+	return facets
+
+	
+def json_to_csv(j):
+#	j should be a list of dicts
+	headers = []
+	content = ''
+	facets = get_attributes(j)
+#	set the order of columns
+	i = 0
+	for k in facets:
+		headers.append(k)
+		i += 1
+	headers.sort()
+#	write column headers
+	i = 0
+	for k in headers:
+		if (i > 0):
+			content += ','
+		content += '"'+k+'"'
+		i += 1
+	content += '\n'
+	
+	for r in j:
+		i = 0
+		for k in headers:
+			if (i > 0):
+				content += ','
+			if ((k in r) and r[k]):
+				content += '"'+r[k]+'"'
+			i += 1
+		content += '\n'
+	return content
+
+def bibtex_conversion_service(cgi_fields):
 	callback = ''
 	response = {}
 	bibstring = ''
+	csv = ''
 	error = False
 	if (not cgi_fields):
 			print 'Content-type: text/plain \n\n',
@@ -677,44 +730,47 @@ def bibtex_to_json_service(cgi_fields):
 		document = cgi_fields.getfirst('document')
 		file = cgi_fields.getfirst('file')
 		url = cgi_fields.getfirst('url')
+		format = cgi_fields.getfirst('format')
 
 
-		value_substitutions = {
-			'{':'',
-			'}':''
-			}
-		
 		if (file):
 			bibstring = open(file, "r").read()
 		elif (url):
 			bibstring = str(urllib2.urlopen(url).read())
 		elif (document):
-			bibstring = document	
+			bibstring = document
 			
 		if (bibstring):
 			bibstring = unicode(bibstring, errors='replace')
-			response = read_bibstring(bibstring, value_substitutions)
-			debug_info = {"params":''+'f: '+str(file) +'  u: '+str(url)+'  d: '+str(document)}	
+			response = bibtex_to_json(bibstring)
+#			debug_info = {"params":''+'f: '+str(file) +'  u: '+str(url)+'  d: '+str(document)}	
 	#		response.append(debug_info)
 	#		if error:
 	#			response['error'] = '' #urllib.quote_plus(cgi_fields.getfirst('params'))
 		else:
 			response = {
-					"error":'no param values',
-					"params":''+'f: '+str(file) +'  u: '+str(url)+'  d: '+str(document)}
+					"error":'no bibtex source parameter specified. (url=, document=, file=)',
+					"params":''+'f: '+str(file) +'  u: '+str(url)+'  d: '+str(document)+'  format:'+str(format)+'  callback:'+str(callback)
+					}
 	
 		print 'Content-type: text/plain \n\n'
-		if ('callback' in cgi_fields):	
-			print callback+'('+simplejson.dumps(response)+')'
+		if (format == 'csv'):
+			response = json_to_csv(response)
 		else:
-			print simplejson.dumps(response)
+			response = simplejson.dumps(response)
+		
+		if ('callback' in cgi_fields):	
+			print callback+'('+response+')'
+		else:
+			print response
 
+
+	
 #if __name__ == "__main__":
 
-#cgitb.enable()
 cgi_fields = cgi.FieldStorage()    
 if (cgi_fields):
-    bibtex_to_json_service(cgi_fields)
+    bibtex_conversion_service(cgi_fields)
 #	print "Content-type: text/html"
 #	print
 #	print "Hello World"	
@@ -738,9 +794,12 @@ else:
 		'{':'',
 		'}':''
 		}
+#	bibstring = str(urllib2.urlopen('http://localhost/bkn/bibtex/temp.bib').read()).strip()
 	bibstring = open('temp.bib', "r").read()
 	bibstring = unicode(bibstring, errors='replace')
 	bibjson = read_bibstring(bibstring, value_substitutions)
 	
-	str(urllib2.urlopen('http://localhost/bkn/bibtex/temp.bib').read()).strip()
-	print simplejson.dumps(bibjson, indent=2)
+#	print simplejson.dumps(bibjson, indent=2)
+#	print simplejson.dumps(get_attributes(bibjson), indent=2)
+	print json_to_csv(bibjson)
+	

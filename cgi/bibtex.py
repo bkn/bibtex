@@ -737,17 +737,21 @@ def bibtex_conversion_service(cgi_fields):
 			bibstring = open(file, "r").read()
 		elif (url):
 			bibstring = str(urllib2.urlopen(url).read())
+			# hidden feature, convert json to csv
+			if (url[-5:] == '.json'):
+				bibstring = unicode(bibstring, errors='replace')
+				response = simplejson.loads(bibstring)
 		elif (document):
 			bibstring = document
 			
-		if (bibstring):
+		if (bibstring and not response):
 			bibstring = unicode(bibstring, errors='replace')
 			response = bibtex_to_json(bibstring)
 #			debug_info = {"params":''+'f: '+str(file) +'  u: '+str(url)+'  d: '+str(document)}	
 	#		response.append(debug_info)
 	#		if error:
 	#			response['error'] = '' #urllib.quote_plus(cgi_fields.getfirst('params'))
-		else:
+		elif (not response):
 			response = {
 					"error":'no bibtex source parameter specified. (url=, document=, file=)',
 					"params":''+'f: '+str(file) +'  u: '+str(url)+'  d: '+str(document)+'  format:'+str(format)+'  callback:'+str(callback)
@@ -762,7 +766,8 @@ def bibtex_conversion_service(cgi_fields):
 		if ('callback' in cgi_fields):	
 			print callback+'('+response+')'
 		else:
-			print response
+#			print response
+			print response.encode('utf-8', 'replace')
 
 
 	
@@ -799,7 +804,6 @@ else:
 	bibstring = unicode(bibstring, errors='replace')
 	bibjson = read_bibstring(bibstring, value_substitutions)
 	
-#	print simplejson.dumps(bibjson, indent=2)
+	print simplejson.dumps(bibjson, indent=2)
 #	print simplejson.dumps(get_attributes(bibjson), indent=2)
-	print json_to_csv(bibjson)
-	
+
